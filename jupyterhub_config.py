@@ -1,5 +1,8 @@
-from oauthenticator.github import GitHubOAuthenticator
-c.JupyterHub.authenticator_class = GitHubOAuthenticator
+from oauthenticator.github import LocalGitHubOAuthenticator
+c.JupyterHub.authenticator_class = LocalGitHubOAuthenticator
+
+# Allows creation of users `adduser` when /home/xxx is not present
+c.LocalAuthenticator.create_system_users = True
 
 # These env vars will be retrieved at runtime
 # $OAUTH_CALLBACK_URL: http[s]://[your-host]/hub/oauth_callback
