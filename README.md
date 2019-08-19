@@ -1,5 +1,7 @@
 # Spark JupyterHub
 
+[![Build Status](https://travis-ci.org/guangie88/spark-jupyterhub.svg?branch=master)](https://travis-ci.org/guangie88/spark-jupyterhub)
+
 Opinionated set-up to build Docker image with Spark + JupyterHub.
 
 This also comes with custom script to easily set up multi-user Conda
