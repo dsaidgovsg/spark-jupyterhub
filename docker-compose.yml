@@ -6,6 +6,7 @@ services:
     - 8000:8000
     volumes:
     - "./jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py:ro"
+    - "./jupyter_notebook_config.json:/opt/conda/etc/jupyter/jupyter_notebook_config.json:ro"
     environment:
       OAUTH_CALLBACK_URL: http://localhost:8000/hub/oauth_callback
       OAUTH_CLIENT_ID: 
