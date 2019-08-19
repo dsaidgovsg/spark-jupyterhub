@@ -1,0 +1,55 @@
+#!/bin/bash
+set -euo pipefail
+
+# Default variables
+USER="${USER:-$(whoami | tr -d '[:space:]')}"
+ENVNAME="${USER}"
+DEFAULT_PACKAGES=""
+
+# Constants
+PROG="$(basename -- $0)"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      echo ""
+      echo "${PROG} - Easy set-up script for conda environment in JupyterHub"
+      echo "If conda environment already exists, this script will not perform any action"
+      echo ""
+      echo "Usage: ${PROG} [options] [arguments...]"
+      echo ""
+      echo "options:"
+      echo "-e, --env                 environment name to create [default: ${USER}]"
+      echo ""
+      echo "arguments:"
+      echo "Packages to initialize when creating the new environment (delimited by space), e.g. python=2.7 numpy scipy"
+      echo "If left blank, installs Python with default version ($(python --version))"
+      echo "nb_conda_kernels is always installed to enable integration with JupyterHub"
+      echo ""
+      exit 0
+      ;;
+    -e|--env)
+      shift
+      ENVNAME="$1"
+      shift
+      ;;
+    *)
+      DEFAULT_PACKAGES="${@:1}"
+      break
+      ;;
+  esac
+done
+
+function env_present {
+  conda info -e | cut -d " " -f 1 | grep "${ENVNAME}" > /dev/null
+}
+
+if ! env_present; then
+  # These steps are okay to redo
+  conda init bash
+  conda config --add channels conda-forge
+
+  conda create -y -n "${ENVNAME}" nb_conda_kernels ${DEFAULT_PACKAGES}
+fi
+
+# Note: To remove any conda environment, run this: conda remove --name <env> --all
