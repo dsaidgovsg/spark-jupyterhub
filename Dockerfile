@@ -1,4 +1,10 @@
-FROM guangie88/spark-custom-addons:2.4.3_hadoop-3.1.0_k8s_hive_pyspark_debian
+ARG FROM_DOCKER_IMAGE="guangie88/spark-custom-addons"
+ARG SPARK_VERSION=2.4.3
+ARG HADOOP_VERSION=3.1.0
+ARG HIVE_TAG_SUFFIX="_hive"
+ARG PYSPARK_TAG_SUFFIX="_pyspark"
+
+FROM ${FROM_DOCKER_IMAGE}:${SPARK_VERSION}_hadoop-${HADOOP_VERSION}${HIVE_TAG_SUFFIX}${PYSPARK_TAG_SUFFIX}_debian
 
 ARG PYTHON3_VERSION=3.7
 ARG CONDA_HOME=/opt/conda
