@@ -14,7 +14,8 @@ ARG PY4J_SRC="py4j-0.10.7-src.zip"
 ENV PYTHONPATH "${SPARK_HOME}/python:${SPARK_HOME}/python/lib/${PY4J_SRC}"
 
 # Install conda
-RUN export DEBIAN_FRONTEND=noninteractive && \
+RUN ls "${SPARK_HOME}/python/lib/${PY4J_SRC}" > /dev/null && \
+    export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get install -y --no-install-recommends curl && \
     curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
