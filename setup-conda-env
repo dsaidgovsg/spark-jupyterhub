@@ -44,12 +44,14 @@ function env_present {
   conda info -e | cut -d " " -f 1 | grep "${ENVNAME}" > /dev/null
 }
 
-if ! env_present; then
-  # These steps are okay to redo
-  conda init bash
-  conda config --add channels conda-forge
-
-  conda create -y -n "${ENVNAME}" nb_conda_kernels ${DEFAULT_PACKAGES}
+if env_present; then
+  echo "Conda environment \"${ENVNAME}\" already exists, nothing to do..."
+  exit 0
 fi
 
+# These steps are okay to redo
+conda init bash
+conda config --add channels conda-forge
+
+conda create -y -n "${ENVNAME}" nb_conda_kernels ${DEFAULT_PACKAGES}
 # Note: To remove any conda environment, run this: conda remove --name <env> --all
