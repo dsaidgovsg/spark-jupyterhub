@@ -10,6 +10,7 @@ matrix:
 {%- for v in versions %}
   - services: docker
     env:
+    - JUPYTERHUB_VERSION={{ v.jupyterhub }}
     - SPARK_VERSION={{ v.spark }}
     - HADOOP_VERSION={{ v.hadoop }}
     - HIVE_TAG_SUFFIX=_hive
@@ -22,12 +23,13 @@ script:
 - |-
   docker build . \
     --build-arg FROM_DOCKER_IMAGE=${FROM_DOCKER_IMAGE} \
+    --build-arg JUPYTERHUB_VERSION=${JUPYTERHUB_VERSION} \
     --build-arg SPARK_VERSION=${SPARK_VERSION} \
     --build-arg HADOOP_VERSION=${HADOOP_VERSION} \
     --build-arg HIVE_TAG_SUFFIX=${HIVE_TAG_SUFFIX} \
     --build-arg PYSPARK_TAG_SUFFIX=${PYSPARK_TAG_SUFFIX} \
     --build-arg PY4J_SRC=${PY4J_SRC} \
-    -t "${DOCKER_IMAGE}:${SPARK_VERSION}_hadoop-${HADOOP_VERSION}"
+    -t "${DOCKER_IMAGE}:${JUPYTERHUB_VERSION}_spark-${SPARK_VERSION}_hadoop-${HADOOP_VERSION}"
 
 deploy:
   provider: script
