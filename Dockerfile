@@ -6,11 +6,9 @@ ARG PYSPARK_TAG_SUFFIX="_pyspark"
 
 FROM ${FROM_DOCKER_IMAGE}:${SPARK_VERSION}_hadoop-${HADOOP_VERSION}${HIVE_TAG_SUFFIX}${PYSPARK_TAG_SUFFIX}_debian
 
-ARG PYTHON3_VERSION=3.7
-ARG CONDA_HOME=/opt/conda
-
 # PY4J_SRC=`ls ${SPARK_HOME}/python/lib/py4j* | sed -E "s/.+(py4j-.+)/\1/" | tr -d "\n"` to get the py4j source zip file
 ARG PY4J_SRC="py4j-0.10.7-src.zip"
+ARG CONDA_HOME=/opt/conda
 ENV PYTHONPATH "${SPARK_HOME}/python:${SPARK_HOME}/python/lib/${PY4J_SRC}"
 
 # Install conda
@@ -32,24 +30,28 @@ RUN ls "${SPARK_HOME}/python/lib/${PY4J_SRC}" > /dev/null && \
 # Also set for Docker env for docker exec
 ENV PATH="${CONDA_HOME}/bin:${PATH}"
 
+ARG JUPYTERHUB_VERSION=1.0.0
+ARG PYTHON3_VERSION=3.7
+
 # Install required packages for JupyterHub
 RUN conda update -y -n base -c defaults conda && \
     conda install -y -c conda-forge \
     configurable-http-proxy \
     jinja2 \
+    "jupyterhub=${JUPYTERHUB_VERSION}" \
     jupyterlab \
     pip \
     pycurl \
     "python=${PYTHON3_VERSION}" \
     nb_conda_kernels \
     nodejs \
+    oauthenticator \
     requests \
     sqlalchemy \
     tornado \
     traitlets \
     && \
     python3 -m pip install --upgrade pip && \
-    python3 -m pip install oauthenticator && \
     conda clean --all && \
     :
 

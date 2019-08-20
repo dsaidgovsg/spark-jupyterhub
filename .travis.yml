@@ -9,72 +9,84 @@ matrix:
   include:
   - services: docker
     env:
+    - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.3.0
     - HADOOP_VERSION=2.7.3
     - HIVE_TAG_SUFFIX=_hive
     - PYSPARK_TAG_SUFFIX=_pyspark
   - services: docker
     env:
+    - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.3.1
     - HADOOP_VERSION=2.7.3
     - HIVE_TAG_SUFFIX=_hive
     - PYSPARK_TAG_SUFFIX=_pyspark
   - services: docker
     env:
+    - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.3.2
     - HADOOP_VERSION=2.7.3
     - HIVE_TAG_SUFFIX=_hive
     - PYSPARK_TAG_SUFFIX=_pyspark
   - services: docker
     env:
+    - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.3.3
     - HADOOP_VERSION=2.7.3
     - HIVE_TAG_SUFFIX=_hive
     - PYSPARK_TAG_SUFFIX=_pyspark
   - services: docker
     env:
+    - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.4.0
     - HADOOP_VERSION=2.7.3
     - HIVE_TAG_SUFFIX=_hive
     - PYSPARK_TAG_SUFFIX=_pyspark
   - services: docker
     env:
+    - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.4.0
     - HADOOP_VERSION=3.1.0
     - HIVE_TAG_SUFFIX=_hive
     - PYSPARK_TAG_SUFFIX=_pyspark
   - services: docker
     env:
+    - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.4.1
     - HADOOP_VERSION=2.7.3
     - HIVE_TAG_SUFFIX=_hive
     - PYSPARK_TAG_SUFFIX=_pyspark
   - services: docker
     env:
+    - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.4.1
     - HADOOP_VERSION=3.1.0
     - HIVE_TAG_SUFFIX=_hive
     - PYSPARK_TAG_SUFFIX=_pyspark
   - services: docker
     env:
+    - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.4.2
     - HADOOP_VERSION=2.7.3
     - HIVE_TAG_SUFFIX=_hive
     - PYSPARK_TAG_SUFFIX=_pyspark
   - services: docker
     env:
+    - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.4.2
     - HADOOP_VERSION=3.1.0
     - HIVE_TAG_SUFFIX=_hive
     - PYSPARK_TAG_SUFFIX=_pyspark
   - services: docker
     env:
+    - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.4.3
     - HADOOP_VERSION=2.7.3
     - HIVE_TAG_SUFFIX=_hive
     - PYSPARK_TAG_SUFFIX=_pyspark
   - services: docker
     env:
+    - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.4.3
     - HADOOP_VERSION=3.1.0
     - HIVE_TAG_SUFFIX=_hive
@@ -86,12 +98,13 @@ script:
 - |-
   docker build . \
     --build-arg FROM_DOCKER_IMAGE=${FROM_DOCKER_IMAGE} \
+    --build-arg JUPYTERHUB_VERSION=${JUPYTERHUB_VERSION} \
     --build-arg SPARK_VERSION=${SPARK_VERSION} \
     --build-arg HADOOP_VERSION=${HADOOP_VERSION} \
     --build-arg HIVE_TAG_SUFFIX=${HIVE_TAG_SUFFIX} \
     --build-arg PYSPARK_TAG_SUFFIX=${PYSPARK_TAG_SUFFIX} \
     --build-arg PY4J_SRC=${PY4J_SRC} \
-    -t "${DOCKER_IMAGE}:${SPARK_VERSION}_hadoop-${HADOOP_VERSION}"
+    -t "${DOCKER_IMAGE}:${JUPYTERHUB_VERSION}_spark-${SPARK_VERSION}_hadoop-${HADOOP_VERSION}"
 
 deploy:
   provider: script
