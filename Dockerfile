@@ -5,6 +5,7 @@ ARG HADOOP_VERSION=3.1.0
 # Note k8s based images are always officially Alpine-based
 FROM ${FROM_DOCKER_IMAGE}:${SPARK_VERSION}_hadoop-${HADOOP_VERSION}
 
+# Require root user to run the service properly
 USER root
 
 # PY4J_SRC=`ls ${SPARK_HOME}/python/lib/py4j* | sed -E "s/.+(py4j-.+)/\1/" | tr -d "\n"` to get the py4j source zip file
@@ -29,6 +30,8 @@ RUN conda install -y -c conda-forge \
     traitlets \
     && \
     conda clean -a -y && \
+    # Required to resolve the weird jupyterhub undefined symbol: pam_strerror linking
+    apk add --no-cache binutils linux-pam-dev; \
     :
 
 # Original jupyterhub also uses the path below
@@ -39,5 +42,4 @@ EXPOSE 8000
 # Custom script to easily allow conda set-up
 COPY ./setup-conda-env "${CONDA_HOME}/bin/"
 
-USER spark
 CMD ["jupyterhub"]
