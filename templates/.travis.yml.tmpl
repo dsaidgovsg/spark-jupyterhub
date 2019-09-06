@@ -17,7 +17,8 @@ matrix:
 
 script:
 - FROM_DOCKER_TAG="${SPARK_VERSION}_hadoop-${HADOOP_VERSION}"
-- PY4J_SRC="$(docker run --rm -t --entrypoint bash ${FROM_DOCKER_IMAGE}:${FROM_DOCKER_TAG} -c 'ls ${SPARK_HOME}/python/lib/py4j* | sed -E "s/.+(py4j-.+)/\1/"')"
+- PY4J_SRC="$(docker run --rm -t --entrypoint bash ${FROM_DOCKER_IMAGE}:${FROM_DOCKER_TAG} -c 'ls ${SPARK_HOME}/python/lib/py4j* | sed -E "s/.+(py4j-.+)/\1/" | tr -d "\n"')"
+- echo "${PY4J_SRC}"
 - |-
   docker build . \
     --build-arg "FROM_DOCKER_IMAGE=${FROM_DOCKER_IMAGE}" \
