@@ -31,7 +31,7 @@ RUN conda install -y -c conda-forge \
     && \
     conda clean -a -y && \
     # Required to resolve the weird jupyterhub undefined symbol: pam_strerror linking
-    apk add --no-cache binutils linux-pam-dev; \
+    apk add --no-cache binutils linux-pam-dev && \
     :
 
 # Original jupyterhub also uses the path below
