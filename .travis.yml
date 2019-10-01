@@ -2,7 +2,7 @@ language: bash
 
 env:
   global:
-  - DOCKER_IMAGE="guangie88/spark-jupyterhub"
+  - DOCKER_IMAGE="spark-jupyterhub"
   - FROM_DOCKER_IMAGE="guangie88/spark-k8s-addons"
 
 matrix:
@@ -12,11 +12,19 @@ matrix:
     - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=master-36f8e53
     - HADOOP_VERSION=3.2.0
+    - PYTHON_VERSION=3.7
   - services: docker
     env:
     - JUPYTERHUB_VERSION=1.0.0
     - SPARK_VERSION=2.4.4
     - HADOOP_VERSION=3.1.0
+    - PYTHON_VERSION=3.7
+  - services: docker
+    env:
+    - JUPYTERHUB_VERSION=1.0.0
+    - SPARK_VERSION=2.3.4
+    - HADOOP_VERSION=2.7.3
+    - PYTHON_VERSION=3.7
 
 script:
 - FROM_DOCKER_TAG="${SPARK_VERSION}_hadoop-${HADOOP_VERSION}"
@@ -28,8 +36,9 @@ script:
     --build-arg "JUPYTERHUB_VERSION=${JUPYTERHUB_VERSION}" \
     --build-arg "SPARK_VERSION=${SPARK_VERSION}" \
     --build-arg "HADOOP_VERSION=${HADOOP_VERSION}" \
+    --build-arg "PYTHON_VERSION=${PYTHON_VERSION}" \
     --build-arg "PY4J_SRC=${PY4J_SRC}" \
-    -t "${DOCKER_IMAGE}:${JUPYTERHUB_VERSION}_spark-${SPARK_VERSION}_hadoop-${HADOOP_VERSION}"
+    -t "${DOCKER_IMAGE}:${JUPYTERHUB_VERSION}_spark-${SPARK_VERSION}_hadoop-${HADOOP_VERSION}_python-${PYTHON_VERSION}"
 
 deploy:
   provider: script

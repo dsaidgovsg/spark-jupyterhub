@@ -13,6 +13,7 @@ ARG PY4J_SRC="py4j-0.10.7-src.zip"
 ENV PYTHONPATH "${SPARK_HOME}/python:${SPARK_HOME}/python/lib/${PY4J_SRC}"
 
 ARG JUPYTERHUB_VERSION=1.0.0
+ARG PYTHON_VERSION=3.7
 
 # Install required packages for JupyterHub
 RUN conda install -y -c conda-forge \
@@ -21,6 +22,7 @@ RUN conda install -y -c conda-forge \
     "jupyterhub=${JUPYTERHUB_VERSION}" \
     jupyterlab \
     pycurl \
+    "python=${PYTHON_VERSION}" \
     nb_conda_kernels \
     nodejs \
     oauthenticator \
