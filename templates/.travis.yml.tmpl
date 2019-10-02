@@ -11,14 +11,11 @@ matrix:
 {%- for jupyterhub in v.jupyterhub %}
 {%- for spark in v.spark %}
 {%- for hadoop in v.hadoop %}
-{%- for python in v.python %}
   - services: docker
     env:
     - JUPYTERHUB_VERSION={{ jupyterhub }}
     - SPARK_VERSION={{ spark }}
     - HADOOP_VERSION={{ hadoop }}
-    - PYTHON_VERSION={{ python }}
-{%- endfor %}
 {%- endfor %}
 {%- endfor %}
 {%- endfor %}
@@ -34,9 +31,8 @@ script:
     --build-arg "JUPYTERHUB_VERSION=${JUPYTERHUB_VERSION}" \
     --build-arg "SPARK_VERSION=${SPARK_VERSION}" \
     --build-arg "HADOOP_VERSION=${HADOOP_VERSION}" \
-    --build-arg "PYTHON_VERSION=${PYTHON_VERSION}" \
     --build-arg "PY4J_SRC=${PY4J_SRC}" \
-    -t "${DOCKER_IMAGE}:${JUPYTERHUB_VERSION}_spark-${SPARK_VERSION}_hadoop-${HADOOP_VERSION}_python-${PYTHON_VERSION}"
+    -t "${DOCKER_IMAGE}:${JUPYTERHUB_VERSION}_spark-${SPARK_VERSION}_hadoop-${HADOOP_VERSION}"
 
 deploy:
   provider: script
