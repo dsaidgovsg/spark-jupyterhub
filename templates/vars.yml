@@ -1,8 +1,8 @@
 versions:
-- jupyterhub: "1.0.0"
-  spark:      master-36f8e53
-  hadoop:     "3.2.0"
+- jupyterhub: ['1.0.0']
+  spark:      ['master-3b1674c']
+  hadoop:     ['3.2.0']
 
-- jupyterhub: "1.0.0"
-  spark:      "2.4.4"
-  hadoop:     "3.1.0"
+- jupyterhub: ['1.0.0']
+  spark:      ['2.4.4']
+  hadoop:     ['3.1.0']

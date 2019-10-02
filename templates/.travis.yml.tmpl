@@ -2,17 +2,23 @@ language: bash
 
 env:
   global:
-  - DOCKER_IMAGE="guangie88/spark-jupyterhub"
+  - DOCKER_IMAGE="spark-jupyterhub"
   - FROM_DOCKER_IMAGE="guangie88/spark-k8s-addons"
 
 matrix:
   include:
 {%- for v in versions %}
+{%- for jupyterhub in v.jupyterhub %}
+{%- for spark in v.spark %}
+{%- for hadoop in v.hadoop %}
   - services: docker
     env:
-    - JUPYTERHUB_VERSION={{ v.jupyterhub }}
-    - SPARK_VERSION={{ v.spark }}
-    - HADOOP_VERSION={{ v.hadoop }}
+    - JUPYTERHUB_VERSION={{ jupyterhub }}
+    - SPARK_VERSION={{ spark }}
+    - HADOOP_VERSION={{ hadoop }}
+{%- endfor %}
+{%- endfor %}
+{%- endfor %}
 {%- endfor %}
 
 script:

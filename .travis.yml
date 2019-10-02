@@ -2,7 +2,7 @@ language: bash
 
 env:
   global:
-  - DOCKER_IMAGE="guangie88/spark-jupyterhub"
+  - DOCKER_IMAGE="spark-jupyterhub"
   - FROM_DOCKER_IMAGE="guangie88/spark-k8s-addons"
 
 matrix:
@@ -10,7 +10,7 @@ matrix:
   - services: docker
     env:
     - JUPYTERHUB_VERSION=1.0.0
-    - SPARK_VERSION=master-36f8e53
+    - SPARK_VERSION=master-3b1674c
     - HADOOP_VERSION=3.2.0
   - services: docker
     env:
