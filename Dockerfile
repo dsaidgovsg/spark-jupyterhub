@@ -5,6 +5,9 @@ ARG HADOOP_VERSION=3.1.0
 # Note k8s based images are always officially Alpine-based
 FROM ${FROM_DOCKER_IMAGE}:${SPARK_VERSION}_hadoop-${HADOOP_VERSION}
 
+# The Python version generally can be anything as long as the below deps can be
+# installed
+ARG PYTHON_VERSION=3.7
 ARG JUPYTERHUB_VERSION=1.0.0
 
 # Require root user to run the service properly
@@ -17,6 +20,7 @@ RUN conda install -y \
     "jupyterhub=${JUPYTERHUB_VERSION}" \
     jupyterlab \
     pycurl \
+    "python=${PYTHON_VERSION}" \
     nb_conda_kernels \
     nodejs \
     oauthenticator \
