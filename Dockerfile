@@ -5,17 +5,13 @@ ARG HADOOP_VERSION=3.1.0
 # Note k8s based images are always officially Alpine-based
 FROM ${FROM_DOCKER_IMAGE}:${SPARK_VERSION}_hadoop-${HADOOP_VERSION}
 
+ARG JUPYTERHUB_VERSION=1.0.0
+
 # Require root user to run the service properly
 USER root
 
-# PY4J_SRC=`ls ${SPARK_HOME}/python/lib/py4j* | sed -E "s/.+(py4j-.+)/\1/" | tr -d "\n"` to get the py4j source zip file
-ARG PY4J_SRC="py4j-0.10.7-src.zip"
-ENV PYTHONPATH "${SPARK_HOME}/python:${SPARK_HOME}/python/lib/${PY4J_SRC}"
-
-ARG JUPYTERHUB_VERSION=1.0.0
-
 # Install required packages for JupyterHub
-RUN conda install -y -c conda-forge \
+RUN conda install -y \
     configurable-http-proxy \
     jinja2 \
     "jupyterhub=${JUPYTERHUB_VERSION}" \
@@ -40,6 +36,6 @@ WORKDIR /srv/jupyterhub/
 EXPOSE 8000
 
 # Custom script to easily allow conda set-up
-COPY ./setup-conda-env "${CONDA_HOME}/bin/"
+COPY ./setup-conda-env /usr/local/bin/
 
 CMD ["jupyterhub"]
