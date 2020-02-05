@@ -7,10 +7,8 @@ FROM guangie88/spark-k8s-addons:${SPARK_VERSION}_hadoop-${HADOOP_VERSION}
 # Require root user to run the service properly
 USER root
 
-# PY4J_SRC=`ls ${SPARK_HOME}/python/lib/py4j* | sed -E "s/.+(py4j-.+)/\1/" | tr -d "\n"` to get the py4j source zip file
-ARG PY4J_SRC="py4j-0.10.7-src.zip"
-ENV PYTHONPATH "${SPARK_HOME}/python:${SPARK_HOME}/python/lib/${PY4J_SRC}"
-
+# Python version can be anything as long as the deps below can be installed
+ARG PYTHON_VERSION=3.7
 ARG JUPYTERHUB_VERSION=1.1.0
 
 # Install required packages for JupyterHub
@@ -20,6 +18,7 @@ RUN conda install -y -c conda-forge \
     "jupyterhub=${JUPYTERHUB_VERSION}" \
     jupyterlab \
     pycurl \
+    "python=${PYTHON_VERSION}" \
     nb_conda_kernels \
     nodejs \
     oauthenticator \
