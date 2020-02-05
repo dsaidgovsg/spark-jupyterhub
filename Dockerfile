@@ -1,9 +1,8 @@
-ARG FROM_DOCKER_IMAGE="guangie88/spark-k8s-addons"
 ARG SPARK_VERSION=2.4.4
 ARG HADOOP_VERSION=3.1.0
 
 # Note k8s based images are always officially Alpine-based
-FROM ${FROM_DOCKER_IMAGE}:${SPARK_VERSION}_hadoop-${HADOOP_VERSION}
+FROM guangie88/spark-k8s-addons:${SPARK_VERSION}_hadoop-${HADOOP_VERSION}
 
 # Require root user to run the service properly
 USER root
@@ -12,7 +11,7 @@ USER root
 ARG PY4J_SRC="py4j-0.10.7-src.zip"
 ENV PYTHONPATH "${SPARK_HOME}/python:${SPARK_HOME}/python/lib/${PY4J_SRC}"
 
-ARG JUPYTERHUB_VERSION=1.0.0
+ARG JUPYTERHUB_VERSION=1.1.0
 
 # Install required packages for JupyterHub
 RUN conda install -y -c conda-forge \

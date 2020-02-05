@@ -1,6 +1,6 @@
 # Spark JupyterHub
 
-[![Build Status](https://travis-ci.org/guangie88/spark-jupyterhub.svg?branch=master)](https://travis-ci.org/guangie88/spark-jupyterhub)
+![CI Status](https://img.shields.io/github/workflow/status/guangie88/spark-jupyterhub/CI/master?label=CI&logo=github&style=for-the-badge)
 
 Opinionated set-up to build Docker image with Spark + JupyterHub.
 
@@ -27,3 +27,7 @@ one for GitHub OAuth.
 Follow the examples listed here:
 
 - [GitHub OAuth](examples/github)
+
+## Changelogs
+
+All self-versioned change logs are listed in [`CHANGELOG.md`](CHANGELOG.md).
