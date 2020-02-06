@@ -41,5 +41,6 @@ EXPOSE 8000
 
 # Custom script to easily allow conda set-up
 COPY ./setup-conda-env "${CONDA_HOME}/bin/"
+COPY ./conda.sh "/etc/profile.d/"
 
 CMD ["jupyterhub"]
