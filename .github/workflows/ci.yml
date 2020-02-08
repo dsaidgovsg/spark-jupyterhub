@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - master
+    - v*
+  pull_request:
+    branches:
+    - master
+    - v*
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        version:
+        - jupyterhub: "1.0.0"
+          spark:      "2.4.4"
+          hadoop:     "3.1.0"
+        - jupyterhub: "1.1.0"
+          spark:      "2.4.4"
+          hadoop:     "3.1.0"
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: spark-jupyterhub
+      SELF_VERSION: "v1"
+      JUPYTERHUB_VERSION: "${{ matrix.version.jupyterhub }}"
+      SPARK_VERSION: "${{ matrix.version.spark }}"
+      HADOOP_VERSION: "${{ matrix.version.hadoop }}"
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v1
+    - name: Install tera-cli
+      run: |-
+        wget https://github.com/guangie88/tera-cli/releases/download/v0.3.0/tera_linux_amd64 -O /tmp/tera
+        chmod +x /tmp/tera
+    - name: Check differences between ci.yml and ci.yml.tmpl
+      run: |-
+        cp .github/workflows/ci.yml .github/workflows/ci.yml.backup
+        TERA=/tmp/tera ./templates/apply-vars.sh
+        if ! diff .github/workflows/ci.yml .github/workflows/ci.yml.backup; then echo "ci.yml.tmpl and ci.yml differs!" && exit 1; fi
+    - name: Build Docker image
+      run: |-
+        TAG_NAME="${SELF_VERSION}_${JUPYTERHUB_VERSION}_spark-${SPARK_VERSION}_hadoop-${HADOOP_VERSION}"
+        docker build . -t "${IMAGE_NAME}:${TAG_NAME}" \
+          --build-arg JUPYTERHUB_VERSION="${JUPYTERHUB_VERSION}" \
+          --build-arg SPARK_VERSION="${SPARK_VERSION}" \
+          --build-arg HADOOP_VERSION="${HADOOP_VERSION}" \
+    - name: Push Docker image
+      run: bash push-images.sh
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      if: github.event_name == 'push'
