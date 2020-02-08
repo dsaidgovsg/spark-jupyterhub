@@ -41,7 +41,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 function env_present {
-  conda env list | cut -d " " -f 1 | grep "${ENVNAME}" > /dev/null
+  conda info -e | cut -d " " -f 1 | grep "${ENVNAME}" > /dev/null
 }
 
 if env_present; then
@@ -53,5 +53,5 @@ fi
 conda init bash
 conda config --add channels conda-forge
 
+# Note: To remove any conda environment, run this: conda remove --name <env> --all
 conda create -y -n "${ENVNAME}" nb_conda_kernels ${DEFAULT_PACKAGES}
-# Note: To remove any conda environment, run this: conda env remove -n <env>
