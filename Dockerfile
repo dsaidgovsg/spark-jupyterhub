@@ -1,4 +1,4 @@
-ARG SPARK_VERSION=2.4.4
+ARG SPARK_VERSION=2.4.5
 ARG HADOOP_VERSION=3.1.0
 
 # Note k8s based images are always officially Alpine-based
@@ -28,8 +28,6 @@ RUN conda install -y -c conda-forge \
     traitlets \
     && \
     conda clean -a -y && \
-    # Required to resolve the weird jupyterhub undefined symbol: pam_strerror linking
-    apk add --no-cache binutils linux-pam-dev && \
     :
 
 # Original jupyterhub also uses the path below

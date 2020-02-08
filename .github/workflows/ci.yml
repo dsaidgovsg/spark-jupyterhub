@@ -16,15 +16,27 @@ jobs:
       matrix:
         version:
         - jupyterhub: "1.0.0"
-          spark:      "2.4.4"
+          spark:      "2.4.5"
           hadoop:     "3.1.0"
         - jupyterhub: "1.1.0"
-          spark:      "2.4.4"
+          spark:      "2.4.5"
           hadoop:     "3.1.0"
+        - jupyterhub: "1.0.0"
+          spark:      "3.0.0-preview-rc2"
+          hadoop:     "3.2.0"
+        - jupyterhub: "1.0.0"
+          spark:      "3.0.0-preview2-rc2"
+          hadoop:     "3.2.0"
+        - jupyterhub: "1.1.0"
+          spark:      "3.0.0-preview-rc2"
+          hadoop:     "3.2.0"
+        - jupyterhub: "1.1.0"
+          spark:      "3.0.0-preview2-rc2"
+          hadoop:     "3.2.0"
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: spark-jupyterhub
-      SELF_VERSION: "v1"
+      SELF_VERSION: "v2"
       JUPYTERHUB_VERSION: "${{ matrix.version.jupyterhub }}"
       SPARK_VERSION: "${{ matrix.version.spark }}"
       HADOOP_VERSION: "${{ matrix.version.hadoop }}"
