@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v2
+
+- Supports Spark 2.4.5 and 3.0 previews and Debian based.
+- Adds a profile script so that all new user terminals will use
+  `/opt/conda/default/bin` and `/opt/conda/bin` as part of `PATH`.
+
 ## v1
 
 - Basic Docker implementation. Supports only Spark 2.4.4.
