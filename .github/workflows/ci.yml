@@ -58,7 +58,7 @@ jobs:
       SCALA_VERSION: "${{ matrix.version.scala }}"
     steps:
     - name: Checkout code
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Install tera-cli
       run: |-
         wget https://github.com/guangie88/tera-cli/releases/download/v0.3.0/tera_linux_amd64 -O /tmp/tera
