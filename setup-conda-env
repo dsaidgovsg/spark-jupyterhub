@@ -1,13 +1,19 @@
 #!/bin/bash
 set -euo pipefail
 
+function get_python_version {
+  # Python 2.7 prints to stderr by default
+  2>&1 python --version
+}
+
 # Default variables
 USER="${USER:-$(whoami | tr -d '[:space:]')}"
 ENVNAME="${USER}"
-DEFAULT_PACKAGES=""
+FILE=""
+DEFAULT_PACKAGES=()
 
 # Constants
-PROG="$(basename -- $0)"
+PROG="$(basename -- "$0")"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -20,10 +26,12 @@ while [[ $# -gt 0 ]]; do
       echo ""
       echo "options:"
       echo "-e, --env                 environment name to create [default: ${USER}]"
+      echo "-f, --file                additional environment file for updating the new environment"
       echo ""
       echo "arguments:"
-      echo "Packages to initialize when creating the new environment (delimited by space), e.g. python=2.7 numpy scipy"
-      echo "If left blank, installs Python with default version ($(python --version))"
+      echo "Packages to initialize when creating the new environment (delimited by space), e.g. python=3.5 numpy scipy"
+      echo ""
+      echo "If left blank, installs Python with default version ($(get_python_version))"
       echo "nb_conda_kernels is always installed to enable integration with JupyterHub"
       echo ""
       exit 0
@@ -33,8 +41,13 @@ while [[ $# -gt 0 ]]; do
       ENVNAME="$1"
       shift
       ;;
+    -f|--file)
+      shift
+      FILE="$1"
+      shift
+      ;;
     *)
-      DEFAULT_PACKAGES="${@:1}"
+      DEFAULT_PACKAGES=( "${@:1}" )
       break
       ;;
   esac
@@ -53,5 +66,12 @@ fi
 conda init bash
 conda config --add channels conda-forge
 
+# Give priority to file because it is likely to contain the python version
+if [[ ! -z "${FILE}" ]]; then
+  conda env create -n "${ENVNAME}" --file "${FILE}"
+  conda install -y -n "${ENVNAME}" nb_conda_kernels "${DEFAULT_PACKAGES[@]}"
+else
+  conda create -y -n "${ENVNAME}" nb_conda_kernels "${DEFAULT_PACKAGES[@]}"
+fi
+
 # Note: To remove any conda environment, run this: conda remove --name <env> --all
-conda create -y -n "${ENVNAME}" nb_conda_kernels ${DEFAULT_PACKAGES}
