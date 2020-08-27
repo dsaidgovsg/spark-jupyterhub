@@ -1,6 +1,6 @@
 # Spark JupyterHub
 
-![CI Status](https://img.shields.io/github/workflow/status/guangie88/spark-jupyterhub/CI/master?label=CI&logo=github&style=for-the-badge)
+![CI Status](https://img.shields.io/github/workflow/status/dsaidgovsg/spark-jupyterhub/CI/master?label=CI&logo=github&style=for-the-badge)
 
 Opinionated set-up to build Docker image with Spark + JupyterHub.
 
