@@ -33,7 +33,7 @@ jobs:
     env:
       IMAGE_NAME: spark-jupyterhub
       SELF_VERSION: "{{ self_version }}"
-      BASE_VERSION: "v2"
+      BASE_VERSION: "{{ base_version }}"
       {% raw -%}
       JUPYTERHUB_VERSION: "${{ matrix.version.jupyterhub }}"
       SPARK_VERSION: "${{ matrix.version.spark }}"

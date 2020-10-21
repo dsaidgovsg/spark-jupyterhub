@@ -82,8 +82,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: spark-jupyterhub
-      SELF_VERSION: "v2"
-      BASE_VERSION: "v2"
+      SELF_VERSION: "v3"
+      BASE_VERSION: "v4"
       JUPYTERHUB_VERSION: "${{ matrix.version.jupyterhub }}"
       SPARK_VERSION: "${{ matrix.version.spark }}"
       HADOOP_VERSION: "${{ matrix.version.hadoop }}"

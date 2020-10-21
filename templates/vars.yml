@@ -1,12 +1,15 @@
-self_version: "v2"
+self_version: "v3"
+base_version: "v4"
 
 versions:
 - jupyterhub: ['1.0.0', '1.1.0']
   spark:      ['2.4.5', '2.4.6', '2.4.7']
   hadoop:     ['3.1.0']
   scala:      ['2.11', '2.12']
+  python:     ["3.6", "3.7", "3.8"]
 
 - jupyterhub: ['1.0.0', '1.1.0']
   spark:      ['3.0.0', '3.0.1']
   hadoop:     ['3.2.0']
   scala:      ['2.12']
+  python:     ["3.6", "3.7", "3.8"]
