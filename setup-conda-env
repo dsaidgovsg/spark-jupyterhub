@@ -1,11 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-function get_python_version {
-  # Python 2.7 prints to stderr by default
-  2>&1 python --version
-}
-
 # Default variables
 USER="${USER:-$(whoami | tr -d '[:space:]')}"
 ENVNAME="${USER}"
@@ -25,14 +20,16 @@ while [[ $# -gt 0 ]]; do
       echo "Usage: ${PROG} [options] [arguments...]"
       echo ""
       echo "options:"
-      echo "-e, --env                 environment name to create [default: ${USER}]"
-      echo "-f, --file                additional environment file for updating the new environment"
+      echo "  -e, --env                 environment name to create [default: ${USER}]"
+      echo "  -f, --file                additional environment file for updating the new environment"
       echo ""
       echo "arguments:"
       echo "Packages to initialize when creating the new environment (delimited by space), e.g. python=3.5 numpy scipy"
       echo ""
-      echo "If left blank, installs Python with default version ($(get_python_version))"
-      echo "nb_conda_kernels is always installed to enable integration with JupyterHub"
+      echo "If left blank, installs Python with the latest version, which you can discover using the command below:"
+      echo "  conda search -f python | grep pkgs/main | awk 'END{print \$2}'"
+      echo ""
+      echo "nb_conda_kernels + ipykernel are always installed to enable integration with JupyterHub"
       echo ""
       exit 0
       ;;
@@ -67,7 +64,7 @@ conda init bash
 conda config --add channels conda-forge
 
 # Give priority to file because it is likely to contain the python version
-if [[ ! -z "${FILE}" ]]; then
+if [[ -n "${FILE}" ]]; then
   conda env create -n "${ENVNAME}" --file "${FILE}"
   conda install -y -n "${ENVNAME}" nb_conda_kernels ipykernel "${DEFAULT_PACKAGES[@]}"
 else
