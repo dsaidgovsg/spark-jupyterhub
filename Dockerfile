@@ -18,7 +18,8 @@ RUN conda install -y -p "${CONDA_PREFIX}" \
     configurable-http-proxy \
     jinja2 \
     "jupyterhub=${JUPYTERHUB_VERSION}" \
-    jupyterlab \
+    # labextension below only allow for jupyterlab<3.0.0
+    jupyterlab=2.2 \
     pycurl \
     "python=${PYTHON_VERSION}" \
     nb_conda_kernels \
@@ -30,6 +31,10 @@ RUN conda install -y -p "${CONDA_PREFIX}" \
     traitlets \
     && \
     conda clean -a -y && \
+    :
+
+RUN jupyter labextension install @jlab-enhanced/launcher && \
+    jupyter labextension disable @jupyterlab/launcher-extension && \
     :
 
 # Original jupyterhub also uses the path below
