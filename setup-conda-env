@@ -69,9 +69,9 @@ conda config --add channels conda-forge
 # Give priority to file because it is likely to contain the python version
 if [[ ! -z "${FILE}" ]]; then
   conda env create -n "${ENVNAME}" --file "${FILE}"
-  conda install -y -n "${ENVNAME}" nb_conda_kernels "${DEFAULT_PACKAGES[@]}"
+  conda install -y -n "${ENVNAME}" nb_conda_kernels ipykernel "${DEFAULT_PACKAGES[@]}"
 else
-  conda create -y -n "${ENVNAME}" nb_conda_kernels "${DEFAULT_PACKAGES[@]}"
+  conda create -y -n "${ENVNAME}" nb_conda_kernels ipykernel "${DEFAULT_PACKAGES[@]}"
 fi
 
 # Note: To remove any conda environment, run this: conda remove --name <env> --all
