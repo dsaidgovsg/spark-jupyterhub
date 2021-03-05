@@ -29,11 +29,17 @@ RUN conda install -y -p "${CONDA_PREFIX}" \
     sqlalchemy \
     tornado \
     traitlets \
+    pip \
     && \
     conda clean -a -y && \
     :
 
-RUN jupyter labextension install @jlab-enhanced/launcher && \
+RUN pip install sparkmonitor && \
+    jupyter nbextension install sparkmonitor --py && \
+    jupyter nbextension enable  sparkmonitor --py && \
+    jupyter serverextension enable --py --system sparkmonitor # this should happen automatically && \
+    jupyter lab build && \
+    jupyter labextension install @jlab-enhanced/launcher && \
     jupyter labextension disable @jupyterlab/launcher-extension && \
     :
 
@@ -48,5 +54,6 @@ COPY ./setup-conda-env "${CONDA_HOME}/bin/"
 # The default profile will weaken the PATH for new user, so need to add back the
 # relevant conda paths
 COPY ./conda.sh "/etc/profile.d/"
+COPY ./entrypoint.sh "./entrypoint.sh"
 
-CMD ["jupyterhub"]
+ENTRYPOINT [ "./entrypoint.sh" ]
