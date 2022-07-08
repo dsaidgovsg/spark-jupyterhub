@@ -1,7 +1,7 @@
 ARG BASE_VERSION=v2
-ARG SPARK_VERSION=2.4.5
-ARG HADOOP_VERSION=3.1.0
-ARG SCALA_VERSION=2.12
+ARG SPARK_VERSION=3.3.0
+ARG HADOOP_VERSION=3.3.2
+ARG SCALA_VERSION=2.13
 
 # Note k8s based images are always officially Alpine-based
 FROM dsaidgovsg/spark-k8s-addons:${BASE_VERSION}_${SPARK_VERSION}_hadoop-${HADOOP_VERSION}_scala-${SCALA_VERSION}
@@ -10,8 +10,8 @@ FROM dsaidgovsg/spark-k8s-addons:${BASE_VERSION}_${SPARK_VERSION}_hadoop-${HADOO
 USER root
 
 # Python version can be anything as long as the deps below can be installed
-ARG PYTHON_VERSION=3.7
-ARG JUPYTERHUB_VERSION=1.1.0
+ARG PYTHON_VERSION=3.9
+ARG JUPYTERHUB_VERSION=2.3.1
 
 # Install required packages for JupyterHub
 RUN conda install -y -p "${CONDA_PREFIX}" \
@@ -19,7 +19,7 @@ RUN conda install -y -p "${CONDA_PREFIX}" \
     jinja2 \
     "jupyterhub=${JUPYTERHUB_VERSION}" \
     # labextension below only allow for jupyterlab<3.0.0
-    jupyterlab=2.2 \
+    jupyterlab \
     pycurl \
     "python=${PYTHON_VERSION}" \
     nb_conda_kernels \

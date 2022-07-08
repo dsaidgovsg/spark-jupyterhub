@@ -2,8 +2,10 @@
 
 ## v2
 
+- Supports Spark "3.1.3", "3.2.1", "3.3.0".
+- Supports JupyterHub "1.5.0", "2.2.2", "2.3.1".
 - Adds `jlab-enhanced/launcher` as `labextension` to improve launcher UI.
-- Supports Spark 2.4.5 and above + and 3.0.x and Debian based.
+- Change to Debian distro.
 - Adds a profile script so that all new user terminals will use
   `/opt/conda/default/bin` and `/opt/conda/bin` as part of `PATH`.
 
