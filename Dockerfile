@@ -1,36 +1,55 @@
-ARG BASE_VERSION=v2
-ARG SPARK_VERSION=2.4.5
-ARG HADOOP_VERSION=3.1.0
-ARG SCALA_VERSION=2.12
+ARG BASE_VERSION=v5
+ARG SPARK_VERSION=3.3.0
+ARG HADOOP_VERSION=3.3.2
+ARG SCALA_VERSION=2.13
+ARG JAVA_VERSION=11
+ARG PYTHON_VERSION=3.9
 
 # Note k8s based images are always officially Alpine-based
-FROM dsaidgovsg/spark-k8s-addons:${BASE_VERSION}_${SPARK_VERSION}_hadoop-${HADOOP_VERSION}_scala-${SCALA_VERSION}
+FROM dsaidgovsg/spark-k8s-addons:${BASE_VERSION}_${SPARK_VERSION}_hadoop-${HADOOP_VERSION}_scala-${SCALA_VERSION}_java-${JAVA_VERSION}_python-${PYTHON_VERSION}
 
 # Require root user to run the service properly
 USER root
 
-# Python version can be anything as long as the deps below can be installed
-ARG PYTHON_VERSION=3.7
-ARG JUPYTERHUB_VERSION=1.1.0
+ARG JUPYTERHUB_VERSION=2.3.1
+
+# This directory will hold all the default bins and libs installed via conda
+ARG CONDA_HOME=/opt/conda
+ENV CONDA_HOME="${CONDA_HOME}"
+ENV PATH="${CONDA_HOME}/bin:${PATH}"
+
+# Install wget for to get external deps
+RUN set -euo pipefail && \
+    apt-get update; \
+    apt-get install -y wget; \
+    rm -rf /var/lib/apt/lists/*; \
+    :
+
+ARG MINICONDA3_VERSION="py39_4.12.0"
+
+RUN set -euo pipefail && \
+    ## Install conda via installer
+    wget "https://repo.continuum.io/miniconda/Miniconda3-${MINICONDA3_VERSION}-Linux-x86_64.sh"; \
+    bash "Miniconda3-${MINICONDA3_VERSION}-Linux-x86_64.sh" -b -p "${CONDA_HOME}"; \
+    rm "Miniconda3-${MINICONDA3_VERSION}-Linux-x86_64.sh"; \
+    ## Create the basic configuration for installation later
+    ## Do not put any packages in create because this seems to pin the packages to the given versions
+    ## Use conda install for that instead
+    conda config --add channels conda-forge; \
+    conda clean -a -y; \
+    :
 
 # Install required packages for JupyterHub
-RUN conda install -y -p "${CONDA_PREFIX}" \
+RUN conda install -y \
     configurable-http-proxy \
-    jinja2 \
     "jupyterhub=${JUPYTERHUB_VERSION}" \
     # labextension below only allow for jupyterlab<3.0.0
-    jupyterlab=2.2 \
-    pycurl \
-    "python=${PYTHON_VERSION}" \
+    jupyterlab \
     nb_conda_kernels \
-    nodejs \
     oauthenticator \
-    requests \
-    sqlalchemy \
-    tornado \
-    traitlets \
     && \
     conda clean -a -y && \
+    conda init bash && \
     :
 
 RUN jupyter labextension install @jlab-enhanced/launcher && \
