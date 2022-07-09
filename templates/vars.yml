@@ -1,5 +1,5 @@
 self_version: "v2"
-base_version: "v2"
+base_version: "v5"
 
 versions:
 - jupyterhub: ["1.5.0", "2.2.2", "2.3.1"]
