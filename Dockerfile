@@ -5,7 +5,6 @@ ARG SCALA_VERSION=2.13
 ARG JAVA_VERSION=11
 ARG PYTHON_VERSION=3.9
 
-# Note k8s based images are always officially Alpine-based
 FROM dsaidgovsg/spark-k8s-addons:${BASE_VERSION}_${SPARK_VERSION}_hadoop-${HADOOP_VERSION}_scala-${SCALA_VERSION}_java-${JAVA_VERSION}_python-${PYTHON_VERSION}
 
 # Require root user to run the service properly
