@@ -1,8 +1,8 @@
 ARG BASE_VERSION=v5
-ARG SPARK_VERSION=3.3.0
-ARG HADOOP_VERSION=3.3.2
+ARG SPARK_VERSION=3.4.1
+ARG HADOOP_VERSION=3.3.4
 ARG SCALA_VERSION=2.13
-ARG JAVA_VERSION=11
+ARG JAVA_VERSION=8
 ARG PYTHON_VERSION=3.9
 
 FROM dsaidgovsg/spark-k8s-addons:${BASE_VERSION}_${SPARK_VERSION}_hadoop-${HADOOP_VERSION}_scala-${SCALA_VERSION}_java-${JAVA_VERSION}_python-${PYTHON_VERSION}
@@ -10,7 +10,7 @@ FROM dsaidgovsg/spark-k8s-addons:${BASE_VERSION}_${SPARK_VERSION}_hadoop-${HADOO
 # Require root user to run the service properly
 USER root
 
-ARG JUPYTERHUB_VERSION=2.3.1
+ARG JUPYTERHUB_VERSION=3.1.1
 
 # This directory will hold all the default bins and libs installed via conda
 ARG CONDA_HOME=/opt/conda
@@ -24,7 +24,7 @@ RUN set -euo pipefail && \
     rm -rf /var/lib/apt/lists/*; \
     :
 
-ARG MINICONDA3_VERSION="py39_4.12.0"
+ARG MINICONDA3_VERSION="py39_23.10.0-1"
 
 RUN set -euo pipefail && \
     ## Install conda via installer
@@ -36,6 +36,7 @@ RUN set -euo pipefail && \
     ## Use conda install for that instead
     conda config --add channels conda-forge; \
     conda clean -a -y; \
+    conda config --set solver libmamba; \
     :
 
 # Install required packages for JupyterHub
@@ -51,7 +52,7 @@ RUN conda install -y \
     conda init bash && \
     :
 
-RUN jupyter labextension install @jlab-enhanced/launcher && \
+RUN conda install -c conda-forge jlab-enhanced-launcher && \
     jupyter labextension disable @jupyterlab/launcher-extension && \
     :
 
