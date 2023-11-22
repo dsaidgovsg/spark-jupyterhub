@@ -41,7 +41,6 @@ RUN set -euo pipefail && \
 
 # Install required packages for JupyterHub
 RUN conda install -y \
-    configurable-http-proxy \
     "jupyterhub=${JUPYTERHUB_VERSION}" \
     # labextension below only allow for jupyterlab<3.0.0
     jupyterlab \
@@ -52,7 +51,8 @@ RUN conda install -y \
     conda init bash && \
     :
 
-RUN conda install -c conda-forge jlab-enhanced-launcher && \
+RUN pip3 install --upgrade 'SQLAlchemy<2.0.0' && \
+    conda install -c conda-forge jlab-enhanced-launcher && \
     jupyter labextension disable @jupyterlab/launcher-extension && \
     :
 
