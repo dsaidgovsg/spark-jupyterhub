@@ -21,6 +21,7 @@ ENV PATH="${CONDA_HOME}/bin:${PATH}"
 RUN set -euo pipefail && \
     apt-get update; \
     apt-get install -y wget; \
+    apt-get -y install git; \
     rm -rf /var/lib/apt/lists/*; \
     :
 
@@ -52,8 +53,8 @@ RUN conda install -y \
     :
 
 RUN pip3 install --upgrade 'SQLAlchemy<2.0.0' && \
-    conda install -c conda-forge jlab-enhanced-launcher && \
-    jupyter labextension disable @jupyterlab/launcher-extension && \
+    pip3 install -U jupyterlab jupyterlab-git && \
+    jupyter labextension install @jupyterlab/git && \
     :
 
 # Original jupyterhub also uses the path below
